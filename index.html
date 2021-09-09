@@ -2,17 +2,18 @@
 <html>
 <body>
 
-<h2>HTML Forms</h2>
+<h2>Running Experiments</h2>
 
 <form>
   <label for="fname">API Key:</label><br>
   <input type="text" id="apiKey" name="apikey"><br>
-  <h3 id="submit">Submit</h3>
+  <button id="submit">Submit</button>
 </form>
 
 
 </body>
 <script>
+  var form = document.querySelector('form');
   function makeXHR() {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -20,6 +21,7 @@
              var experiments = JSON.parse(this.responseText);
              for (var i=0; i<experiments.length; i++){
                if(experiments[i].status == "running"){
+                 form.insertAdjacentHTML("afterend", "<p>Experiment Name: "+ experiments[i].name +", Targeting Component: "+ experiments[i].url_targeting.key +", Example URL: "+ experiments[i].url_targeting.edit_url +"</p>");
                   console.log("Experiment Name: ", experiments[i].name,"Targeting Component: ",experiments[i].url_targeting.key,"Editor URL: ",experiments[i].url_targeting.edit_url);
              }
           }
