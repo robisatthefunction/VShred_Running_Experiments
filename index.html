@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>HTML Forms</h2>
+
+<form>
+  <label for="fname">API Key:</label><br>
+  <input type="text" id="apiKey" name="apikey"><br>
+  <input id="submit" type="submit" value="Submit">
+</form>
+
+
+</body>
+<script>
+  function makeXHR() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+             var experiments = JSON.parse(this.responseText);
+             for (var i=0; i<experiments.length; i++){
+               if(experiments[i].status == "running"){
+                  console.log("Experiment Name: ", experiments[i].name,"Targeting Component: ",experiments[i].url_targeting.key,"Editor URL: ",experiments[i].url_targeting.edit_url);
+             }
+          }
+        }
+      };
+      var apiKey = document.querySelector("#apiKey").value;
+      xhttp.open("GET", "https://api.optimizely.com/v2/experiments?project_id=20162613972&per_page=100", true);
+      xhttp.setRequestHeader("Authorization","Bearer " + apiKey)
+      xhttp.send();
+
+  }
+
+  document.querySelector('#submit').addEventListener('click',function(){
+    makeXHR();
+  })
+</script>
+</html>
